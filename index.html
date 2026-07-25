@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Date?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink:#F8C6D8;
+    --pink-deep:#F17DA3;
+    --blue:#A9C9EA;
+    --blue-deep:#5C8FCB;
+    --yellow:#FFE8A3;
+    --cream:#FFFBF2;
+    --ink:#3B3550;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(160deg,var(--yellow) 0%,var(--pink) 45%,var(--blue) 100%);
+    color:var(--ink);
+    padding:5vh 5vw;
+  }
+  .ticket{
+    background:var(--cream);
+    border-radius:22px;
+    width:min(92vw,420px);
+    box-shadow:0 24px 60px rgba(80,50,90,.18);
+    overflow:hidden;
+    position:relative;
+    opacity:0;
+    transform:translateY(20px);
+    animation:in .8s ease forwards;
+  }
+  @keyframes in{to{opacity:1;transform:translateY(0);}}
+  .ticket-top{
+    padding:2.2rem 2rem 1.4rem;
+    text-align:center;
+    background:linear-gradient(135deg,var(--pink),var(--pink-deep));
+    color:#fff;
+  }
+  .eyebrow{
+    font-family:'Caveat',cursive;
+    font-size:1.3rem;
+    opacity:.9;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.9rem;
+    margin-top:.2rem;
+    line-height:1.25;
+  }
+  .perforation{
+    height:2px;
+    background:repeating-linear-gradient(90deg, var(--ink) 0 8px, transparent 8px 16px);
+    opacity:.15;
+    position:relative;
+  }
+  .perforation::before,.perforation::after{
+    content:'';
+    position:absolute;
+    top:-11px;
+    width:22px;height:22px;
+    background:linear-gradient(160deg,var(--yellow) 0%,var(--pink) 45%,var(--blue) 100%);
+    border-radius:50%;
+  }
+  .perforation::before{left:-11px;}
+  .perforation::after{right:-11px;}
+  .details{
+    padding:1.6rem 2rem;
+    display:flex;
+    flex-direction:column;
+    gap:.9rem;
+  }
+  .row{
+    display:flex;
+    justify-content:space-between;
+    font-size:.95rem;
+  }
+  .row .label{opacity:.55;}
+  .row .value{font-weight:600;}
+  .note{
+    font-family:'Caveat',cursive;
+    font-size:1.25rem;
+    color:var(--pink-deep);
+    text-align:center;
+    margin-top:.3rem;
+  }
+  .buttons{
+    display:flex;gap:.9rem;justify-content:center;
+    padding:1.4rem 2rem 2.2rem;
+    position:relative;
+  }
+  button{
+    font-family:'Inter',sans-serif;font-weight:600;border:none;border-radius:999px;cursor:pointer;
+    transition:transform .2s ease;
+  }
+  #yes{
+    background:var(--pink-deep);color:#fff;padding:.9rem 2rem;font-size:1rem;
+    box-shadow:0 10px 26px rgba(241,125,163,.4);
+  }
+  #yes:hover{transform:scale(1.06);}
+  #no{
+    background:rgba(59,53,80,.06);color:var(--ink);padding:.9rem 1.6rem;font-size:.95rem;
+    position:relative;
+  }
+  #celebration{
+    display:none;position:fixed;inset:0;z-index:10;
+    background:linear-gradient(160deg,var(--yellow) 0%,var(--pink) 45%,var(--blue) 100%);
+    align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:2rem;
+  }
+  #celebration h1{font-family:'Fraunces',serif;font-size:clamp(2rem,7vw,3rem);color:var(--ink);}
+  #celebration p{margin-top:.7rem;font-size:1.1rem;color:var(--ink);opacity:.8;}
+</style>
+</head>
+<body>
+
+<div class="ticket">
+  <div class="ticket-top">
+    <div class="eyebrow">an invitation for</div>
+    <h1>Yahan</h1>
+  </div>
+  <div class="perforation"></div>
+  <div class="details">
+    <div class="row"><span class="label">Movie</span><span class="value">Red Notice</span></div>
+    <div class="row"><span class="label">Date</span><span class="value">Saturday, Aug 1</span></div>
+    <div class="row"><span class="label">Time</span><span class="value">10:30pm GMT / 7:30pm AT</span></div>
+    <div class="row"><span class="label">Where</span><span class="value">Netflix, together</span></div>
+    <div class="note">so, wanna go?</div>
+  </div>
+  <div class="buttons">
+    <button id="yes" onclick="celebrate()">Yes</button>
+    <button id="no" onmouseenter="dodge()" onclick="dodge()">No</button>
+  </div>
+</div>
+
+<div id="celebration">
+  <h1>it's a date 🎬</h1>
+  <p>popcorn's on me.</p>
+</div>
+
+<script>
+  function dodge(){
+    const btn = document.getElementById('no');
+    const container = btn.parentElement.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    const maxX = container.width - btnRect.width - 20;
+    const x = (Math.random()-0.5) * maxX;
+    const y = (Math.random()-0.5) * 30;
+    btn.style.position='relative';
+    btn.style.left = x+'px';
+    btn.style.top = y+'px';
+  }
+  function celebrate(){
+    document.getElementById('celebration').style.display='flex';
+  }
+</script>
+
+</body>
+</html>
